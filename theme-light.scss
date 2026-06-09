@@ -1,0 +1,167 @@
+/*-- scss:defaults --*/
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+// Typography
+$font-family-sans-serif: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+$headings-font-family: "Fraunces", Georgia, "Times New Roman", serif;
+$font-family-monospace: "JetBrains Mono", SFMono-Regular, Menlo, monospace;
+$font-size-root: 17px;
+$line-height-base: 1.65;
+$headings-font-weight: 600;
+
+// Palette: warm paper background, ink text, burnt-sienna accent
+$body-bg: #fdfbf7;
+$body-color: #2b2620;
+$link-color: #b4530a;
+$link-decoration: none;
+$primary: #21504a;
+
+// Code
+$code-color: #9a4408;
+$code-bg: #f4efe6;
+$code-block-bg: #faf6ee;
+
+// Layout
+$grid-sidebar-width: 290px;
+$grid-margin-width: 270px;
+
+// TOC / sidebar accents
+$toc-color: #6b6257;
+$toc-active-border: #b4530a;
+
+/*-- scss:rules --*/
+
+// Headings: tighter, with a touch of warmth
+h1, h2, h3, h4 {
+  color: #21504a;
+  letter-spacing: -0.01em;
+}
+
+h1.title {
+  font-weight: 700;
+  font-size: 2.6rem;
+  line-height: 1.15;
+}
+
+// Chapter number styling
+.chapter-number::after {
+  content: ".";
+}
+
+// Sidebar
+#quarto-sidebar {
+  background: #f7f2e9;
+  border-right: 1px solid #e8e0d2;
+
+  .sidebar-title {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #21504a;
+  }
+
+  .sidebar-item .sidebar-item-container a {
+    color: #4f463a;
+    font-size: 0.92rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    border-radius: 6px;
+
+    &:hover { color: #b4530a; }
+    &.active {
+      color: #b4530a;
+      font-weight: 600;
+    }
+  }
+}
+
+// Search input
+.sidebar #quarto-search .aa-DetachedSearchButton {
+  border-radius: 8px;
+  border: 1px solid #e0d7c6;
+  background: #fdfbf7;
+}
+
+// Code blocks: soft card with accent edge
+div.sourceCode {
+  border: 1px solid #ece4d4;
+  border-left: 4px solid #d9a368;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(60, 50, 30, 0.05);
+}
+
+pre.sourceCode {
+  font-size: 0.86em;
+  padding: 1rem 1.1rem;
+}
+
+p code:not(.sourceCode), li code:not(.sourceCode), td code:not(.sourceCode) {
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+// Tables: clean editorial style
+.table {
+  font-size: 0.93rem;
+
+  thead th {
+    border-bottom: 2px solid #21504a;
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: #21504a;
+  }
+
+  tbody tr:nth-child(even) { background: #f7f2e9; }
+}
+
+// Images: framed like figures in a printed book
+main img {
+  border-radius: 10px;
+  border: 1px solid #e8e0d2;
+  box-shadow: 0 2px 10px rgba(60, 50, 30, 0.08);
+}
+
+.figure .figure-caption, .quarto-figure figcaption {
+  color: #8a8070;
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-top: 0.6rem;
+  text-align: center;
+}
+
+// Links: underline on hover only
+main a:not(.nav-link):not(.sidebar-item-text) {
+  border-bottom: 1px solid rgba(180, 83, 10, 0.35);
+
+  &:hover {
+    color: #8a3c05;
+    border-bottom-color: #8a3c05;
+  }
+}
+
+// Blockquotes
+blockquote {
+  border-left: 4px solid #d9a368;
+  background: #f7f2e9;
+  border-radius: 0 8px 8px 0;
+  padding: 0.7rem 1.1rem;
+  color: #5a5246;
+}
+
+// Chapter navigation cards at page bottom
+.page-navigation .nav-page a {
+  border-radius: 10px;
+
+  &:hover { background: #f7f2e9; }
+
+  .nav-page-text { color: #21504a; }
+}
+
+// Right-hand table of contents
+#TOC .nav-link.active {
+  font-weight: 600;
+}
