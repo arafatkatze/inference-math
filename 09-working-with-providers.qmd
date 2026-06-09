@@ -1,0 +1,43 @@
+# Working with inference providers
+
+Different providers use different tricks to squeeze performance out of the same hardware: kernel choices, batching strategy, speculative decoding setup, quantization tier, GPU mix. They are not interchangeable, and the only way to find out what fits *your* workload is to make them prove it against your traffic. Most of them are okay with you doing that with test workloads without charging you much. Here's how to actually do that:
+
+**1. Get your own traffic data first.** Before you talk to any provider, pull real metrics from OpenRouter, your current gateway, or whatever you're using today.  Performance is extremely workload-specific, the numbers in this blog are for Cline's traffic shape, and there's no reason to assume they map to yours. It's presumptuous to compare across workloads; the assumptions and scaling we worked out here probably don't apply directly to you. Get your own numbers, then project forward to where you think you'll be in 3–6 months.
+
+**2. Bring a precise traffic shape and precise SLAs to the conversation.** The bare minimum a provider needs from you to give you a real answer:
+
+- TTFT 
+
+- End-to-end latency target
+
+- Requests per second (median and peak)
+
+- Concurrent in-flight requests
+
+- Cache hit rate
+
+- Amortized input length
+
+- Amortized output length
+
+- Uptime
+
+- Model + quantization tier (FP8, FP4, etc, if you know it)
+
+- Burstiness, daily peaks/troughs, weekly patterns, spike behavior
+
+Hand them this packet alongside what "good" looks like: *"we need at least X TTFT, at least Y per-stream tok/s, holding at Z concurrent requests."* Then ask them to run load tests against that exact profile.  
+
+**3. Know what you're optimizing for.** Providers are tuned for different objectives, and you have to pick before you shop:
+
+- **Speed at any cost** → some providers are tuned for low latency and will charge for it.
+
+- **Lowest \$/M tokens** → others optimize for aggregate throughput and will happily trade per-stream TPS to get there.
+
+- **Best fit for a specific SLA** → the middle ground, and where most real production traffic actually lives.
+
+If you don't know which bucket you're in, you'll end up paying for the wrong thing which is why let me reiterate, your SLAs and what you are optimizing for is very critical for all pricing/scaling decisions.
+
+**4. Pit them against each other: **Once you have two or three serious candidates, ask each one to run *the same load test*, on similar GPU configurations, against *your* traffic shape. Make them show you how the system behaves as load ramps up, as batching ramps up, as concurrency climbs, not just the headline number at one operating point. Quality matters as much as speed: run your own evals on each provider's output ([our setup is here](https://cline.bot/blog/a-practical-guide-to-hill-climbing)), because aggressive quantization can quietly wreck response quality even when the latency dashboards look pristine on their own.
+
+The leverage is entirely in the comparative analysis. A lot of providers claim that they can outdo other providers on SLAs +pricing. This is your leverage against them and you can be transparent about EXACTLY what you are getting everywhere to figure out the best match for you. In our case, we offered our traffic shape to different providers and then made them compete to get the best API pricing given the same SLA requirements and it quickly became clear that different providers optimize for different things. Some are very good at pricing, some at latency etc etc and we picked what worked the best for our goals long term. 

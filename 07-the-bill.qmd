@@ -1,0 +1,51 @@
+# The monthly bill
+
+## Comparison to pure API
+
+```javascript
+All API:                  583B × $0.317/M = $185K / month
+Self-host + spillover:    $166K / month
+Net discount:             $19K / month (~10% savings)
+```
+
+About 10% savings vs. pure API, with zero operational risk: if the self-host fleet has issues, the API picks up everything above the trough automatically. The discount comes entirely from running 4 replicas at \$0.250/M continuously instead of paying \$0.317/M for those same tokens at the API. The discount could have been bigger, We're leaving money on the table. The \$96K/month going to API spillover is the expensive bucket, every token through it costs \$0.317/M instead of \$0.250/M. If we autoscaled additional self-host capacity during the predictable peak hours (matching the daily peak/trough pattern instead of sitting at the floor 24/7), we could shift a lot of that spillover onto the cheaper self-host rate.
+
+## The possibilities of financial savings
+
+Rough estimate: time of day autoscaling could push total savings to 22–25% (closer to \$40–50K/month). It's the next optimization on the list(not yet implemented). There are other optimizations and load tests of different cases which weren't explored as deeply. And had they been explored and more cases been tried, it's very plausible that our discount could even easily go to 35 to 40% on the API pricing.
+
+| **Monthly API spend** | **Annual API spend** | **Baseline self-host savings** (floor-sized fleet, like Cline's deploy) | **With time-of-day autoscaling** | **Aggressive (extra GPU tricks + relaxed SLAs)** | **Annual \$ saved at best case** |
+|---|---|---|---|---|---|
+| < \$35K | < \$420K | impossible (one 8-GPU box is the minimum unit) | — | — | — |
+| \$35K – \$100K | \$420K – \$1.2M | marginal, not worth ops cost | ~5–10% | ~10–15% | up to ~\$180K/yr |
+| \$100K – \$500K | \$1.2M – \$6M | ~10–15% (Cline's zone) | ~20–25% | ~30–35% | up to ~\$2.1M/yr |
+| \$500K – \$2M | \$6M – \$24M | ~15–20% | ~25–30% | ~35–40% | up to ~\$9.6M/yr |
+| \$2M+ | \$24M+ | ~20%+ | ~30%+ | 40%+ (custom kernels, speculative decoding, batch tuning, loose latency SLAs) | \$10M+/yr |
+
+A few things worth saying out loud about this table:
+
+- **The floor-sized column** is what you get with the no-risk deploy we described above: size the fleet to the trough of daily traffic, run those replicas 100% utilized 24/7, and let LiteLLM spill everything else to the API. This is the column you should plan against if you're shipping this next quarter.
+
+- **The autoscaling column** assumes you match the daily peak/trough shape: more replicas during business hours, fewer overnight. The savings jump because you're now serving the *expensive* spillover bucket on the cheaper self-host rate instead of the API.
+
+- **The aggressive column** is what's reachable if you're willing to spend real engineering effort: tighter MoE kernels, speculative decoding tuned to your workload, quantization-aware evals to push to FP4 (or lower) without quality regression, batch-size hunting per workload class, and accepting slightly looser per-stream TPS SLAs for back-of-the-pipeline traffic (bulk, async, agentic loops).
+
+- **At \$2M+/month of API spend** (\$24M+/yr), the absolute dollar savings start running into eight figures annually. At that scale, the ops cost of running your own inference stack stops being the question, the question becomes how fast you can hire the team to chase the next 5% MFU.
+
+## Self-hosting vs. inference providers
+
+You *can* actually self-host. The math in this blog is enough to get you started. But for most teams, I'd strongly advise against it. Self-hosting at any serious scale is a full-time job(often with multiple engineers involved). You need people who can read kernels, run load tests, debug MoE all-to-all collectives, tune batching and keep up with a stack that's churning every few weeks. 
+
+The break-even is simple to calculate. A solid inference engineer is roughly **\$300–500K/year**. If your projected self-host savings don't comfortably clear that line, you're not actually saving money, you've just moved the cost to salary line that you have to manage forever, plus the lost focus of whatever else that person or team could have been building.
+
+Rough guidance for hiring, pulling from the savings table earlier:
+
+- **< \$500K/year in API spend:** don't self-host. The savings can't cover the headcount.
+
+- **\$500K – \$1M/year:** only if you *already* have GPU expertise on the team. Otherwise, still no.
+
+- **\$1M – \$2M/year:** now the math works. Hire the engineer/engineers, run the inference, claim the discount.
+
+- **\$2M+/year:** you should be self-hosting(and hiring more inference engineers)
+
+If you're squarely in the "hire the engineer" bucket, by all means, do it. For everyone else, the right move is to get very good at working with inference providers.

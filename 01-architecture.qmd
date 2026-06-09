@@ -1,0 +1,27 @@
+# Model Architecture
+
+To self-host a model, you first load its weights onto a GPU. How much memory that takes is set by the model's architecture. Kimi K2.6 employs [DeepSeek V3-inspired architecture](https://arxiv.org/html/2412.19437v1) with MoE parameters:
+
+- Total parameters: 1 trillion (sparse MoE)
+
+- Active Params: 32 billion 
+
+- Hidden size: 7,168
+
+- Attention heads: 64
+
+- Routed experts: 384
+
+- Shared experts: 1
+
+- Experts per token: 8
+
+- MoE intermediate size: 2,048
+
+- MoE layer frequency: 1
+
+- Context window: 256K tokens
+
+Want to derive these numbers from scratch? Read [Kipply's legendary parameter counting post](https://kipply.github.io/blog/transformer-param-count/). 
+
+If you want some background on transformers architecture you must read: [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/) and if you are too tired to read another blog try [LLM Visualizer](https://bbycroft.net/llm) which is the greatest LLM  visualization I have ever seen.

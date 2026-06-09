@@ -1,0 +1,6 @@
+/.quarto/
+/_book/
+*.tex
+index.log
+
+**/*.quarto_ipynb
