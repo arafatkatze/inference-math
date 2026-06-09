@@ -33,11 +33,9 @@ To render only one format: `quarto render --to html` (or `pdf`, `epub`).
 
 ## Publishing
 
-The rendered site lives on the [`gh-pages`](https://github.com/arafatkatze/inference-math/tree/gh-pages) branch and is served at <https://arafatkatze.github.io/inference-math/>. Every push to `main` triggers `.github/workflows/publish.yml`, which re-renders the book (HTML + PDF + ePub) and pushes the result to `gh-pages`.
+The book is served at <https://arafatkatze.github.io/inference-math/>. Every push to `main` triggers `.github/workflows/publish.yml`, which renders the book (HTML + PDF + ePub) and deploys it to GitHub Pages. The workflow enables Pages automatically on its first run, so no repository settings are required.
 
-One-time setup (if Pages isn't live yet): **Settings → Pages → Source: Deploy from a branch → Branch: `gh-pages` / `/ (root)`**.
-
-To publish manually from a local machine: `quarto publish gh-pages`.
+If the first run ever fails on the "Enable and configure GitHub Pages" step, enable it manually once: **Settings → Pages → Source → GitHub Actions**.
 
 ## Structure
 
