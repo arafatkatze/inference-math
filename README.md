@@ -33,9 +33,9 @@ To render only one format: `quarto render --to html` (or `pdf`, `epub`).
 
 ## Publishing
 
-The book is served at <https://arafatkatze.github.io/inference-math/>. Every push to `main` triggers `.github/workflows/publish.yml`, which renders the book (HTML + PDF + ePub) and deploys it to GitHub Pages. The workflow enables Pages automatically on its first run, so no repository settings are required.
+The book is served at <https://arafatkatze.github.io/inference-math/>. Every push to `main` triggers `.github/workflows/publish.yml`, which renders the book (HTML + PDF + ePub) and deploys it to GitHub Pages.
 
-If the first run ever fails on the "Enable and configure GitHub Pages" step, enable it manually once: **Settings → Pages → Source → GitHub Actions**.
+One-time setup (requires repo admin): open [Settings → Pages](https://github.com/arafatkatze/inference-math/settings/pages) and set **Source** to **GitHub Actions**, then re-run the latest "Publish Quarto Book" workflow (or push any commit to `main`).
 
 ## Structure
 
