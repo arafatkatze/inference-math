@@ -1,5 +1,7 @@
 # How to Save Millions by Self-Hosting LLMs
 
+**Read the book online: <https://arafatkatze.github.io/inference-math/>** (PDF and ePub downloads are in the site's sidebar)
+
 A [Quarto book](https://quarto.org/docs/books/) covering the math of LLM inference and the actual dollars: loading the model, serving it (prefill/decode/KV cache), batching, load testing, sizing the GPU fleet, the monthly bill, and working with inference providers.
 
 The book renders to three formats from a single source:
@@ -31,9 +33,11 @@ To render only one format: `quarto render --to html` (or `pdf`, `epub`).
 
 ## Publishing
 
-Every push to `main` triggers `.github/workflows/publish.yml`, which renders the book and deploys `_book/` to GitHub Pages. The PDF and ePub are rendered in the same job and are downloadable from the site's navbar.
+The rendered site lives on the [`gh-pages`](https://github.com/arafatkatze/inference-math/tree/gh-pages) branch and is served at <https://arafatkatze.github.io/inference-math/>. Every push to `main` triggers `.github/workflows/publish.yml`, which re-renders the book (HTML + PDF + ePub) and pushes the result to `gh-pages`.
 
-One-time setup: in the repository settings, set **Settings → Pages → Source** to **GitHub Actions**.
+One-time setup (if Pages isn't live yet): **Settings → Pages → Source: Deploy from a branch → Branch: `gh-pages` / `/ (root)`**.
+
+To publish manually from a local machine: `quarto publish gh-pages`.
 
 ## Structure
 
