@@ -1,0 +1,29 @@
+# Closing note
+
+When I started writing this blog, my original intent was simpler and more ambitious than what it turned into. I wanted to be able to look at a model, count its params, pick a GPU, take my traffic shape, and from those inputs alone, extrapolate exactly what the model would cost, how fast it would respond, and how it would behave under load. Over the many weeks of writing this, I learnt the bitter lesson that this is not how it works, and I was wrong by a long shot.
+
+The further I got into the math, the clearer it became that the variances between theoretical and observed are *massive*. MBU and MFU alone can swing by 6–10× on the same hardware depending on engine, model shape, context length, and batch config. Those asymmetries flow straight downstream into \$/token, TTFT and every number that matters. If you take the theoretical ceiling and use it to set pricing or capacity decisions, you will be wrong by an order of magnitude. 
+
+So why did I still do all this math, and why should you?
+
+Because the alternative is taking people at their word, and that is a worse failure mode. Whether you're running your own GPUs or talking to inference providers, you are constantly being handed numbers, SLAs, benchmarks, \$/M tokens, latency claims, and if you don't have your own mental model to check those numbers against, you have no idea whether they're reasonable, optimistic, or outright wrong. 
+
+The route we actually took at Cline was talking to multiple API providers and making them compete against our real traffic. That back-and-forth only worked because we showed up with our own math. If we had just handed them our [SLAs](https://en.wikipedia.org/wiki/Service-level_agreement) and accepted whatever they came back with, we would never have understood *why* the numbers landed where they did, where the trade-offs actually were, or which knobs were worth negotiating on.
+
+So here's a few words of warning for you:
+
+- **Do not** use the math in this blog to predict your costs from first principles. It won't work as the variance is too high.
+
+- **Do** use it as a reality-checking layer on top of empirical numbers. When a provider quotes you a \$/M, when your own load test spits out a TPS, when an engineer hands you a capacity plan, run it past the napkin. If the empirical number is 2× off the napkin, that's normal. If it's 10× off, somebody is wrong, and you need to find out who.
+
+- **Do** use AI to help you run these calculations. You don't have to grind through every formula by hand. But always double-check the math, especially when you ask someone (or a model) to load test for you.
+
+If you have read the whole blog up until this point I admire your patience and rigor. Good luck with the self-hosting journey. 
+
+Reach out by email ([arafat.da.khan@gmail.com](mailto:arafat.da.khan@gmail.com)) or Twitter ([@arafatkatze](https://x.com/arafatkatze)) with questions or corrections.
+
+## Credits
+
+I am very thankful to the inference providers namely Coreweave, Fireworks and Baseten,  who helped me understand both the pricing and GPU configurations. 
+
+Special thanks to [Katya Ivshina](https://www.instagram.com/katya.ivshina/), Philip Kiely, Saoud, Alex, John, Robin, Dominic, Max and the incredible cline team who offered generous feedback and most importantly gave me the freedom to pursue my genuine intellectual curiosity. 

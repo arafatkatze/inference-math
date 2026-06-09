@@ -1,0 +1,30 @@
+# Picking the GPU
+
+We'll use the [**NVIDIA B200**](https://www.nvidia.com/en-us/data-center/hgx/) (Blackwell). It's NVIDIA's flagship inference GPU and you can rent one from most neoclouds.
+
+Here’s what you need to know about it:
+
+- 192 GB HBM3e VRAM per GPU
+
+- The standard HGX rack ships with **8 GPUs**, wired together by NVLink. NVLink is a fast interconnect between GPUs, so the 8 GPUs can act like one big GPU during inference.
+
+- Total GPU memory is 192 GB * 8 = 1,536 GB (~1.5 TB) per 8-GPU node
+
+## What does this node actually cost?
+
+Let's lock in one number for the rest of the blog: **\$6 per GPU per hour**. Real B200 pricing in 2026 is closer to \$4 if you just rent the GPUS alone, but rounding up gives us a conservative ceiling, if the math works at \$6, it will work in real life. 
+
+```javascript
+$6/GPU/hour × 8 GPUs        = $48 / node / hour
+$48 × 24 hours              = $1,152 / node / day
+$48 × 730 hours (avg month) = $35,040 / node / month
+$48 × 8,760 hours           = $420,480 / node / year
+```
+
+That \$48/hour is your **fixed cost**. Serving 1 user or 1,000, the meter runs the same. The rest of this blog is about squeezing as many tokens as possible out of that \$48/hour as that's what sets your real \$/token.
+
+Note: 
+
+1. Self-hosting only makes sense if you're already spending **\$35K+/month** on API inference for this model. The model can't load on a smaller config, so \$35K/month is the bare minimum entry ticket.
+
+2. You can rent just GPUs alone for as low as 3.5-4\$ but if you work with inference providers they will charge you 5.5-6\$ because they handle the hosting of the model/speculative decoding and all the other model serving magic. As you will later learn in this blog post paying for the extra money to get the models hosted by someone else is a VERY solid deal and much cheaper than hiring an inference engineer if you do it right.

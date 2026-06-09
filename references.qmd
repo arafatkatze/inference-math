@@ -1,0 +1,25 @@
+# References {.unnumbered}
+
+1. [kipply, Transformer Inference Arithmetic](https://kipply.github.io/blog/transformer-inference-arithmetic/)
+
+2. [kipply, Transformer Param Count](https://kipply.github.io/blog/transformer-param-count/)
+
+3. [Jay Alammar, The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)
+
+4. [Horace He, Making Deep Learning Go Brrrr From First Principles](https://horace.io/brrr_intro.html)
+
+5. [Sean Goedecke, Fast LLM Inference From Scratch](https://www.seangoedecke.com/fast-llm-inference/)
+
+6. [DeepSeek-V3 Technical Report](https://arxiv.org/html/2412.19437v1)
+
+7. [Baseten, Kimi K2 Thinking at 140 tok/s on NVIDIA Blackwell](https://www.baseten.co/blog/kimi-k2-thinking-at-140-tps-on-nvidia-blackwell/)
+
+8. [Baseten, Inference Engineering](https://www.baseten.co/inference-engineering/)
+
+9. [SemiAnalysis, InferenceX v2: NVIDIA Blackwell vs AMD MI355X](https://newsletter.semianalysis.com/p/inferencex-v2-nvidia-blackwell-vs)
+
+10. [swyx (Latent Space), Reasoning Price War](https://www.latent.space/p/reasoning-price-war)
+
+11. [Cline, A Practical Guide to Hill Climbing (Evals)](https://cline.bot/blog/a-practical-guide-to-hill-climbing)
+
+12. [How to land a job at frontier lab](https://vladfeinberg.com/2026/05/10/how-to-land-a-job-at-a-frontier-lab.html) 

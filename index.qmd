@@ -1,0 +1,21 @@
+# Preface {.unnumbered}
+
+I wrote this blog because I can’t find this information anywhere else. This is a single post that covers both the math of LLM inference and the actual dollars, grounded in production traffic and real numbers from inference provider negotiations. If you're trying to figure out whether self-hosting an open-weight model saves you money, this is for you.
+
+## Who is this for?
+
+- **Software engineers/Managers:** shipping open-weight models
+
+- **AI research/Inference engineers:** who want a working model of inference math + pricing
+
+- **Management Execs and PMs**: wondering if self-hosting is worth it. You can skim the math, and read the dollar numbers at the end to decide.
+
+- **Students**: chasing a [job at a frontier lab](https://vladfeinberg.com/2026/05/10/how-to-land-a-job-at-a-frontier-lab.html)
+
+## Prerequisites
+
+All you need is high school algebra: every formula in this post is just multiplication, division, exponents etc. You don't need much ML background; transformers, MoE, KV cache, quantization, and everything else is either explained inline or linked to the best primer I could find. The blog is really dense, though, and the depth + understanding lives in the links. At a minimum budget a weekend if you want to actually internalize it. 
+
+## What will we work with?
+
+Our running example is **Kimi K2.6**, with Cline's real production traffic as the ground truth. The math works whether you rent your own GPUs or buy from an inference provider. We'll go in order: load the model, serve inference, batch it, and tune it for production.

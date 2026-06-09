@@ -1,0 +1,25 @@
+# How many GPUs do we need to load the model?
+
+## Figure out how big the weights are
+
+Kimi K2.6 has 1 trillion params. We'll run it in FP4 quantization (0.5 bytes per param).  [Quantization](https://en.wikipedia.org/wiki/Block_floating_point) basically means storing each weight in the model with fewer bits, like rounding \$4.7283910 up to \$5. The model gets way smaller in memory, and if done carefully, it gives almost the same answers.
+
+FP4 is the aggressive quantization tier, and modern models are trained quantization aware, so the quality hit is not that bad, the models are easier to host, and far less memory is needed to load them on GPU. 
+
+```javascript
+weight_bytes = 1,000,000,000,000 × 0.5 byte = 500 GB
+```
+
+## Divide by your GPU memory
+
+```javascript
+500 GB ÷ 192 GB per B200 = 2.60
+```
+
+So **3 B200s** technically fit the weights of FP4 quantized model. That's the floor and its enough to load the model into VRAM and nothing more.
+
+## Quantization and Quality
+
+Quantization is a trade off between price and quality. On the pricing side, every number downstream of this section is linear in bytes-per-param. FP4 puts the weights at 500 GB; FP8 doubles that to 1 TB (you'd need 6 B200s, not 3); BF16 doubles it again. FP4 is the cheapest tier that still ships acceptable quality on modern quantization-aware models, which is why we use it. If your evals say FP4 hurts your workload, redo the chain at FP8  as the math still works, it just costs more. Note: FP4 here means NVFP4 specifically, Blackwell's native 4-bit format. And we'll use "FP4" throughout the blog for brevity.
+
+On the quality side, the trade-off isn't visible on a spec sheet. Some providers offer dirt-cheap, low-latency inference but quantize so aggressively that output collapses no matter how good their latency SLAs([Service Level agreements](https://en.wikipedia.org/wiki/Service-level_agreement)) look. The only way to know what you're shipping is to run evals ([our setup is here](https://cline.bot/blog/a-practical-guide-to-hill-climbing)).

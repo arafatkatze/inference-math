@@ -1,0 +1,56 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "How to Save Millions by Self-Hosting LLMs"
+  author: "Arafat Khan"
+  date: today
+  repo-url: https://github.com/arafatkatze/inference-math
+  repo-actions: [edit, issue]
+  downloads: [pdf, epub]
+  sidebar:
+    search: true
+  chapters:
+    - index.qmd
+    - 01-architecture.qmd
+    - 02-picking-the-gpu.qmd
+    - 03-loading-the-model.qmd
+    - 04-serving.qmd
+    - 05-batching.qmd
+    - 06-sizing-the-fleet.qmd
+    - 07-the-bill.qmd
+    - 08-load-testing.qmd
+    - 09-working-with-providers.qmd
+    - 10-closing.qmd
+    - references.qmd
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-overflow: wrap
+    link-external-newwindow: true
+  pdf:
+    documentclass: scrbook
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    colorlinks: true
+    mainfont: "DejaVu Serif"
+    sansfont: "DejaVu Sans"
+    monofont: "DejaVu Sans Mono"
+    fontsize: 10pt
+    geometry:
+      - margin=1in
+    include-in-header:
+      text: |
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+  epub:
+    toc: true
+    number-sections: true
