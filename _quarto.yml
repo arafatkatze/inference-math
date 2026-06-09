@@ -28,8 +28,11 @@ book:
 format:
   html:
     theme:
-      light: cosmo
-      dark: darkly
+      light: [cosmo, theme-light.scss]
+      dark: [darkly, theme-dark.scss]
+    grid:
+      sidebar-width: 290px
+      margin-width: 270px
     toc: true
     toc-depth: 3
     number-sections: true
