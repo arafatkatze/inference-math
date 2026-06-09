@@ -2,7 +2,7 @@ name: Publish Quarto Book
 
 on:
   push:
-    branches: [main]
+    branches: [main, arafatkatze/quarto-book-a522]
   workflow_dispatch:
 
 permissions:
